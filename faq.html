@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>BACnet MS/TP Development Kit - Technical Specifications</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<style type="text/css">
+<!--
+.style1 {font-family: Arial, Helvetica, sans-serif}
+body {
+	background-color: #ECECEC;
+}
+body,td,th {
+	font-family: Arial, Helvetica, sans-serif;
+}
+.style2 {font-size: small}
+-->
+</style>
+<link href="bacnet.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.style3 {font-size: x-small}
+-->
+</style>
+</head>
+
+<body>
+<table border="0" width="95%">
+<tbody>
+<tr>
+<td scope="row" align="center" width="43">
+<div align="left"></div>
+</td>
+<td width="502">
+<h1 class="style1" align="center">BACnet MS/TP Development Kit</h1>
+<h2 class="style1" align="center">Frequently Asked Questions<br /></h2>
+</td>
+</tr>
+</tbody>
+</table>
+<hr color="#ff0000" />
+<table border="0" cellpadding="8" cellspacing="8" width="95%">
+<tbody>
+<tr>
+<th scope="row" valign="top" width="85">
+<p><a href="default.htm">Home</a></p>
+<p><a href="products.htm">Products</a></p>
+<p><a href="products.htm">Purchase a Kit</a></p>
+</th>
+<td width="479">
+<p>Question: Who designed the BACnet MS/TP Development Kit?</p>
+<p>Answer: Steve Karg, the same engineer who created the <a target="_blank" href="http://bacnet.sourceforge.net/">Open Source BACnet Protocol Stack</a> hosted on <a target="_blank" href="http://sourceforge.net/">SourceForge.net</a>.&nbsp; Steve's brother Lou and Lou's friend Dan created the original website.</p>
+<hr />
+<p>Question: I don't have a <a target="_blank" href="http://paypal.com/">Paypal</a> Account, but want to purchase a board.  How can I pay?</p>
+<p>Answer: We use Paypal to process the orders, and they accept all major credit cards.  No Paypal account is required.</p>
+<hr />
+<p>Question: It appears that complete schematics and source code will be able to form an excellent foundation for our project.&nbsp; Is that true?</p>
+<div class="im">Answer: Yes, the complete schematics and source code are open source. RS-485 and AVR are easy to develop for hardware - no secrets there!&nbsp; Steve wanted
+to provide an embedded platform to demonstrate a BACnet device using his open source BACnet Protocol Stack hosted on Sourceforge.net.&nbsp; Steve also used cross platform schematic layout and PCB design tool <a target="_blank" href="https://www.autodesk.com/products/eagle/overview">EAGLE CAD from CADsoft</a> for the schematic and PCB design, with a small enough board to qualify for the "Lite" version.<br /></div>
+<hr />
+<div class="im">Question: You've chosen <a target="_blank" href="http://microchip.com/">Microchip/Atmel</a> - what a fantastic choice - I use Atmel AVR's everywhere so this will not be a problem.&nbsp; The problem I am having, due to my limited experience with BACnet, is the other physical layer options for the BACnet interface such as Ethernet, and Lon.&nbsp; Do you have any experience, advice, options, for supporting these interfaces?&nbsp; The RS-485 is the primary requirement but we are also hearing that Ethernet and LON are going to be stronger in the future.<br /> <br /></div>
+Answer: Steve doesn't know much about the BACnet LON interface, and doesn't hear much about any field demand for it while at BACnet committee meetings. &nbsp;It has been his experience that the popular BACnet datalink layers are BACnet Ethernet, BACnet/IP, and BACnet MS/TP, with BACnet/ZigBee as up and coming.&nbsp; Steve doesn't see much future in the BACnet ARCNET datalink layer, and only knows of two BACnet vendors that use it.<br />
+<hr />
+<div class="im">Question: Any plans for a development kit that also supports these BACnet options (BACnet/IP, BACnet Ethernet) or other microcontrollers?<br /> <br /></div>
+Answer: Steve is planning to create an ARM Cortex M3 kit that includes both RS-485 and Ethernet. He wants a platform that he can develop a BACnet router for inclusion in his open source BACnet Protocol Stack. &nbsp;The beauty of BACnet protocol layering permits routing of the messages to various physical layers that are supported.<br />
+<hr />
+<div class="im">
+<div class="im">Question: What is the purpose of the external SEEPROM (since the AVR already has an internal EEPROM)?<br /> <br /></div>
+<div class="im">Answer: Personal preference.&nbsp; Steve has always found the internal EEPROM of most microcontrollers to be slower (longer write wait), less durable (only 100000 write cycles versus one million or more for external SEEPROM) and have other caveats (i.e. gets erased during reprogramming or bootloading), so he normally adds an external SEEPROM on his designs. Fortunately, his designs are not as cost sensitive as some, so it passes most design reviews and meets the cost targets of the marketing</div>
+<div class="im">group.<br />
+<hr />
+<div class="im">Question: How do I configure the kit to be an MS/TP Slave node or a Master node (what config file to change)? What are the advantages of having several Master nodes with multiple Slave nodes as&nbsp;opposed to only one Master nodes with multiple Slave nodes?<br /> <br /></div>
+</div>
+<div class="im">Answer: The MS/TP names are really not descriptive of what they
+are: a Master node is really a Peer to Peer node, and a Slave node is
+really just a polled node (Slaves only respond to MS/TP Frame "Data
+Expecting Reply"). Both BACnet MS/TP Master and Slave nodes are BACnet server devices (devices that execute requests from other devices), but only BACnet MS/TP Master nodes can be client devices (initiate requests to other devices)</div>
+</div>
+<div class="im"><br /></div>
+<div class="im">The kit was designed as an MS/TP Master Node. &nbsp;It could be modified to be an MS/TP slave node (polled from a master), but that feature is not in the source code for the project at this time. &nbsp;It could be done - since a slave node is just a subset of Master Node features.</div>
+<div class="im"><br /></div>
+<div class="im">Master Nodes are the preferred implementation for BACnet vendors, since a Slave Node cannot be discovered without a Slave Proxy BACnet router, or without configuring static binding in the work stations. The big advantage to having Master nodes is that they are discoverable by client tools, where Slave nodes are not. &nbsp;Master nodes can respond to WhoIs with I-Am, where Slave nodes cannot.<br />
+<hr />
+<div class="im">Question: If there are too many MS/TP Master nodes on a network, wouldn't the AVR CPU consume so much needed time on passing the token?</div>
+</div>
+<div class="im"><br /></div>
+<div class="im">Answer: Since the Master Node is really a Peer to Peer node, it only passes the token to its neighbor, not to all the other nodes. &nbsp;The most CPU intensive activity would be a single device on the network with one other device (such as a BACnet MS/TP Router), with Max-Master configured correctly (i.e. 1), and then it is just token passing between two nodes. &nbsp;When the MS/TP has Max Master set to 127, then the highest number node would poll to see if it can find a neighbor (Poll for Master).&nbsp;</div>
+<div class="im"><br /></div>
+<div class="im">If you find that you are compute bound during token passing , a device can send a non-standard frame type (i.e. 128) and wait up to 500ms for the reply (which never comes) before passing the token. &nbsp;However, this kit runs at 18MIPS and has more than enough horsepower to token pass and do lots of other useful things.</div>
+<div class="im">
+<hr />
+Question: Please tell me that you have stock of your standard BACnet developer's Kit? I'm sure I'll be placing an order very soon.<br /> <br /></div>
+Answer: We normally have BACnet MS/TP Development Kits in stock.&nbsp; Large orders may require a six week lead time.<br />
+<hr />
+<div class="im">Question: Do you have a recommendation for BACnet tools or PC interface for your kit?</div>
+<div class="im"><br /></div>
+<div class="im">Answer: Steve normally uses a BACnet/IP to MS/TP router for BACnet testing accompanied by Wireshark and the demo applications from the BACnet Stack which test the application layer. There is also VTS (BACnet Visual Test Shell) from SourceForge, but most find VTS a bit challenging from an ease of use point of view.</div>
+<div class="im"><br /></div>
+<div class="im">For a low level MS/TP monitor, Steve uses a USB to RS485 converter and the mstpcap demo tool from BACnet Stack demo tools.&nbsp; There are commercial converters available, such as the <a target="_blank" href="http://www.bb-elec.com/product_family.asp?FamilyId=355">USOPTL4</a> (about $129) or the USB-RS485-WE-1800-BT (about $30) from <a target="_blank" href="http://digikey.com/">Digikey</a>, in addition to the <a target="_blank" href="https://www.cimetrics.com/products/bacnet/b2110-bacnet-mstp-interface">Cimetrics U+4</a> (about $895.00) MS/TP interface.</div>
+<div class="im"><br /></div>
+<div class="im">BACnet/IP to MS/TP Routers can be purchased from <a target="_blank" href="http://polarsoft.biz/">Polarsoft</a> (about $695), <a target="_blank" href="http://www.cimetrics.com/index.php/product-list-check.html">Cimetrics</a> (about $895.00), and <a href="http://ccontrols.com/">Contemporary Controls</a> (about $299).</div>
+<div class="im"><br /></div>
+<div class="im">There is also commercial BACnet testing software, such as <a target="_blank" href="http://polarsoft.biz/bacbeat.html">Polarsoft BACbeat</a> or <a target="_blank" href="http://polarsoft.biz/bqt.html">BACnet Quick Test</a>, <a target="_blank" href="http://www.cimetrics.com/index.php/product-list-check.html">Cimetrics BACnet Explorer</a>, or <a target="_blank" href="http://www.cimetrics.com/index.php/product-list-check.html">Cimetrics BAS-O-Matic</a>, which may help during development.&nbsp; <a target="_blank" href="http://www.chipkin.com/">Chipkin</a> has BACnet software, including a free demo that provides a BACnet Explorer over BACnet MS/TP or BACnet/IP.</div>
+<div class="im"><br /></div>
+<div class="im">On the AVR side, the kit includes standard AVR 2x3 ISP and AVR 2x5 JTAG connectors so that standard Atmel ICE and ISP tools can be used. It also includes FTISP jumpers to allow programming using the <a target="_blank" href="http://hubbard.engr.scu.edu/embedded/avr/ftisp/">FTISP over the USB connection</a>.</div>
+<hr />
+<p>Question: Can you help us get a service to validate the sourceforge code that we implement will work with any BACnet building?&nbsp; How would I accomplish this?</p>
+<p>Answer: The normal route for testing BACnet products is <a target="_blank" href="http://bacnetinternational.org/btl/">BTL (BACnet Testing Labs)</a>.&nbsp; BTL will test your product for BACnet compliance for a fee and issue you a <a target="_blank" href="http://www.bacnetinternational.org/associations/8066/files/BTL-mark.jpg">BTL Mark</a> if your device passes the tests.&nbsp; It usually takes several iterations of testing and fixing to get your product correct unless you have someone test your device prior to submitting.<br /> <br /> There are BACnet testing facilities that can provide pre-testing, such as <a target="_blank" href="http://polarsoft.biz/">Polarsoft</a> or <a target="_blank" href="http://www.bac-test.com/">BACnet Interoperability Testing Services</a><a href="http://www.bac-test.com/" target="_blank"><br /></a></p>
+<hr />
+<p>Question: Where is the BACnet MS/TP Development Kit built and assembled?</p>
+<p>Answer: The BACnet Development Kit circuit boards were fabricated by <a target="_blank" href="http://www.pcb-pool.com/">PCB-Pool</a> and assembled and soldered by Steve in his basement with parts from <a target="_blank" href="http://digikey.com/">Digikey</a> and <a target="_blank" href="http://mouser.com/">Mouser</a>.</p>
+</td>
+</tr>
+<tr>
+<th scope="row"></th>
+<td></td>
+</tr>
+<tr>
+<th scope="row">&nbsp;</th>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p class="style1">&nbsp;</p>
+<p class="style1 style3">*Atmel and ATMega are all registered trademarks of the Atmel Corporation.</p>
+</body>
+</html>
